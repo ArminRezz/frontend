@@ -1,12 +1,12 @@
-import { CustomersContext } from '../context/customersContext';
 import { useContext } from 'react';
+import { CustomersContext } from '../context/customersContext';
 
 export const useCustomersContext = () => {
-    const context = useContext(CustomersContext)
+    const context = useContext(CustomersContext);
 
     if (!context) {
-        throw Error('useCustomersContext must be used inside an CustomersContextProvider')
+        throw new Error('useCustomersContext must be used within a CustomersContextProvider');
     }
 
-    return context
-}
+    return context;
+};

@@ -31,7 +31,7 @@ const CustomerForm = () => {
             return
         }
 
-        const response = await fetch('/api/customers', {
+        const response = await fetch('/api/customers/', {
             method: 'POST',
             body: JSON.stringify(customer),
             headers: { 
@@ -42,7 +42,7 @@ const CustomerForm = () => {
         const json = await response.json()
 
         if (!response.ok) {
-            setEmptyFields(json.emptyFields)
+            setEmptyFields(json.emptyFields || [])
             setError(json.error)
         }
         if (response.ok) {
@@ -63,7 +63,6 @@ const CustomerForm = () => {
                 type="text" 
                 onChange={(e) => setName(e.target.value)} 
                 value={name} 
-                // Ensure emptyfields is an array before using includes
                 className={emptyFields.includes('name') ? 'error' : ''}
             />
 
@@ -72,7 +71,6 @@ const CustomerForm = () => {
                 type="text" 
                 onChange={(e) => setPhone(e.target.value)} 
                 value={phone} 
-                // Ensure emptyfields is an array before using includes
                 className={emptyFields.includes('phone') ? 'error' : ''}
             />
 

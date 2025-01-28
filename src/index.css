@@ -34,37 +34,46 @@ header a {
 
 /* homepage */
 .home {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Adjust spacing between sections */
+}
+
+.top-section {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  gap: 100px;
+  gap: 20px; /* Adjust spacing between form and QR code */
 }
-.customer-details {
+
+.customer-form, .qr-section {
   background: #fff;
-  border-radius: 4px;
-  margin: 20px auto;
   padding: 20px;
-  position: relative;
+  border-radius: 4px;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
 }
-.customer-details h4 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
-  color: var(--primary);
+
+.customers-table {
+  background: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+  overflow-x: auto; /* Allows horizontal scrolling if needed */
 }
-.customer-details p {
-  margin: 0;
-  font-size: 0.9em;
-  color: #555;
+
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
-.customer-details span {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  background: #f1f1f1;
-  padding: 6px;
-  border-radius: 50%;
-  color: #333;
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: 600;
 }
 
 /* new customer form */

@@ -1,7 +1,9 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+
 import { CustomersContextProvider } from './context/customersContext';
 import { AuthContextProvider } from './context/AuthContext';
 
@@ -10,7 +12,9 @@ root.render(
   <React.StrictMode>
     <AuthContextProvider>
       <CustomersContextProvider>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </CustomersContextProvider>
     </AuthContextProvider>
   </React.StrictMode>

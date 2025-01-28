@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 
 // components 
-import CustomerDetails from '../components/customerDetails'
 import CustomerForm from '../components/customerForm'
+import CreateBusinessQR from '../components/createBusinessQR'
 import { useCustomersContext } from '../hooks/useCustomersContext'
 import { useAuthContext } from '../hooks/useAuthContext'
+import CustomerTable from '../components/customerTable'
+
 const Home = () => {
     const { customers, dispatch } = useCustomersContext()
     const { businessUser } = useAuthContext()
@@ -30,12 +32,14 @@ const Home = () => {
 
     return (
         <div className="home">
-            <div className="customers">
+            {/* <div className="customers">
                 {customers && customers.map((customer) => (
                     <CustomerDetails key={customer._id} customer={customer} />
                 ))}
-            </div>
+            </div> */}
+            <CreateBusinessQR /> 
             <CustomerForm /> 
+            <CustomerTable data={customers} />
         </div>
     )
 }
