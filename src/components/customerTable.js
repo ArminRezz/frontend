@@ -1,53 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useCustomersContext } from '../hooks/useCustomersContext';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { useEffect } from 'react';
 
-function CustomerTable() {
+const CustomerTable = () => {
     const { customers, dispatch } = useCustomersContext();
     const { businessUser } = useAuthContext();
-    const [error, setError] = useState(null);
 
-    useEffect(() => {
+    const handleSetCustomers = async () => {
         if (!businessUser) {
-            setError('You must be logged in');
             return;
         }
-
-        const fetchData = async () => {
-            try {
-                const response = await fetch('/api/customers', {
-                    headers: {
-                        'Authorization': `Bearer ${businessUser.token}`,
-                    }
-                });
-
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        setError('Unauthorized. Please log in again.');
-                        // Optionally, redirect to login page
-                        return;
-                    }
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                if (Array.isArray(data)) {
-                    dispatch({ type: 'SET_CUSTOMERS', payload: data });
-                } else {
-                    throw new Error('Data is not an array');
-                }
-            } catch (error) {
-                console.error('Error fetching customer data:', error);
-                setError(error.message);
+        const response = await fetch('/api/customers/', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${businessUser.token}`
             }
-        };
+        });
+        const json = await response.json();
 
-        fetchData();
-    }, [businessUser, dispatch]);
+        if (response.ok) {
+            dispatch({ type: 'SET_CUSTOMERS', payload: json });
+        }
+    };
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    const handleDeleteCustomer = async (customerId) => {
+        if (!businessUser) {
+            return;
+        }
+        const response = await fetch(`/api/customers/${customerId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${businessUser.token}`
+            }
+        });
+
+        if (response.ok) {
+            dispatch({ type: 'DELETE_CUSTOMER', payload: customerId });
+        }
+    };
+
+    // set the initial customers list
+    useEffect(() => {
+        handleSetCustomers();
+    }, [businessUser]);
 
     return (
         <table style={{ border: 'solid 1px blue', width: '100%' }}>
@@ -71,6 +67,15 @@ function CustomerTable() {
                     }}>
                         Phone
                     </th>
+                    <th style={{
+                        borderBottom: 'solid 3px red',
+                        background: 'aliceblue',
+                        color: 'black',
+                        fontWeight: 'bold',
+                        padding: '10px',
+                    }}>
+                        Actions
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -90,11 +95,20 @@ function CustomerTable() {
                         }}>
                             {row.phone}
                         </td>
+                        <td style={{
+                            padding: '10px',
+                            border: 'solid 1px gray',
+                            background: 'papayawhip',
+                        }}>
+                            <button onClick={() => handleDeleteCustomer(row._id)}>
+                                Delete
+                            </button>
+                        </td>
                     </tr>
                 ))}
             </tbody>
         </table>
     );
-}
+};
 
 export default CustomerTable;
