@@ -5,11 +5,13 @@ import CustomerForm from '../components/customerForm'
 import CreateBusinessQR from '../components/createBusinessQR'
 import { useCustomersContext } from '../hooks/useCustomersContext'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { usePcustomersContext } from '../hooks/usePcustomersContext'
 import CustomerTable from '../components/customerTable'
-
+import PotentialCustomerTable from '../components/pcustomerTable'
 const Home = () => {
     const { customers, dispatch } = useCustomersContext()
     const { businessUser } = useAuthContext()
+    const { potentialCustomers, dispatch: dispatchPotentialCustomers } = usePcustomersContext()
 
     useEffect(() => {
         const fetchCustomers = async () => {
@@ -40,6 +42,7 @@ const Home = () => {
             <CreateBusinessQR /> 
             <CustomerForm /> 
             <CustomerTable data={customers} />
+            <PotentialCustomerTable data={potentialCustomers} />
         </div>
     )
 }

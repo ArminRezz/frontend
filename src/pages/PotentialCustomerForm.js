@@ -9,7 +9,7 @@
 // 4. Form submits data to backend which creates new potential customer record
 // 5. Form locks to prevent duplicate submissions
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const PotentialCustomerForm = () => {
@@ -25,7 +25,10 @@ const PotentialCustomerForm = () => {
     const [customerId, setCustomerId] = useState(null); // ID returned from backend
     const [isLocked, setIsLocked] = useState(false);    // Prevents editing after submit
 
-    // Extract the business user ID from URL query parameters
+    // State for success message
+    const [successMessage, setSuccessMessage] = useState('');
+
+    // Extract the customer ID from URL query parameters
     // This ID comes from the QR code that was scanned
     const location = useLocation();
     const query = new URLSearchParams(location.search);
@@ -53,17 +56,26 @@ const PotentialCustomerForm = () => {
         // Submit customer data to backend API
         const response = await fetch('/api/pcustomers', {
             method: 'POST',
-            body: JSON.stringify(customer),
+            body: JSON.stringify({
+                name: name,
+                phone: phone,
+                customer_id: id
+            }),
             headers: { 
                 'Content-Type': 'application/json',
             }
         });
+
+        // Log the response for debugging
+        console.log('Response:', response);
+
         const json = await response.json();
 
         // Handle API response
         if (!response.ok) {
+            console.error('Error response:', json); // Log error details
             setEmptyFields(json.emptyFields);
-            setError(json.error);
+            setError(json.error || 'An error occurred'); // Fallback error message
         }
         if (response.ok) {
             // Clear any previous errors
@@ -73,6 +85,9 @@ const PotentialCustomerForm = () => {
             // Lock form and store returned customer ID
             setIsLocked(true);
             setCustomerId(json._id);
+            
+            // Set success message
+            setSuccessMessage('Customer added successfully!', customerId);
         }
     };
 
@@ -102,6 +117,7 @@ const PotentialCustomerForm = () => {
 
                 <button type="submit" disabled={isLocked}>Add Potential Customer</button>
                 {error && <div className="error">{error}</div>}
+                {successMessage && <div className="success">{successMessage}</div>}
             </form>
         </>
     );
