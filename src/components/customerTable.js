@@ -50,7 +50,7 @@ const CustomerTable = () => {
             <thead>
                 <tr>
                     <th style={{
-                        borderBottom: 'solid 3px red',
+                        borderBottom: 'solid 3px #1aac83',
                         background: 'aliceblue',
                         color: 'black',
                         fontWeight: 'bold',
@@ -59,7 +59,7 @@ const CustomerTable = () => {
                         Name
                     </th>
                     <th style={{
-                        borderBottom: 'solid 3px red',
+                        borderBottom: 'solid 3px #1aac83',
                         background: 'aliceblue',
                         color: 'black',
                         fontWeight: 'bold',
@@ -68,7 +68,7 @@ const CustomerTable = () => {
                         Phone
                     </th>
                     <th style={{
-                        borderBottom: 'solid 3px red',
+                        borderBottom: 'solid 3px #1aac83',
                         background: 'aliceblue',
                         color: 'black',
                         fontWeight: 'bold',
@@ -100,7 +100,18 @@ const CustomerTable = () => {
                             border: 'solid 1px gray',
                             background: 'papayawhip',
                         }}>
-                            <button onClick={() => handleDeleteCustomer(row._id)}>
+                            <button 
+                                onClick={() => handleDeleteCustomer(row._id)}
+                                style={{
+                                    background: '#1aac83',
+                                    border: 0,
+                                    color: '#fff',
+                                    padding: '4px',
+                                    fontFamily: 'Poppins',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer'
+                                }}
+                            >
                                 Delete
                             </button>
                         </td>

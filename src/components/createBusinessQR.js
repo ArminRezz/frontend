@@ -45,7 +45,7 @@ function CreateBusinessQR() {
     console.log(qrCodeString);
 
     return (
-        <div>
+        <div className="qr-form">
             <h1>Create Business QR Code</h1>
             <form onSubmit={handleSubmit}>
                 <button type="submit">Generate QR Code</button>

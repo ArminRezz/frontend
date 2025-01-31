@@ -142,3 +142,11 @@ form.signup, form.login {
   background: #fff;
   border-radius: 4px;
 }
+
+/* qr form */
+.qr-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}

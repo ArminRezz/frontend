@@ -1,47 +1,57 @@
-// This component handles customer creation for non-logged in users via a special link
-// It gets the business email from the URL query params and creates a customer associated with that business
+// This component renders a form for potential customers to fill out their information
+// The form is accessed via a QR code that contains a unique ID in the URL
+// Once submitted, the form is locked and cannot be edited
 
-import { useState } from 'react';
+// The flow works as follows:
+// 1. Business user generates a QR code with their email
+// 2. Customer scans QR code which brings them to this form with ID in URL
+// 3. Customer fills out name and phone number
+// 4. Form submits data to backend which creates new potential customer record
+// 5. Form locks to prevent duplicate submissions
+
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import CreateCustomerQR from '../components/createCustomerQR';
 
-const CustomerCreation = () => {
-    // State for form fields and validation
+const PotentialCustomerForm = () => {
+    // Form field states to track user input
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
+    
+    // Error handling states
     const [error, setError] = useState(null);
     const [emptyFields, setEmptyFields] = useState([]);
-    const [customerId, setCustomerId] = useState(null);
-    const [isLocked, setIsLocked] = useState(false);
+    
+    // States for after successful submission
+    const [customerId, setCustomerId] = useState(null); // ID returned from backend
+    const [isLocked, setIsLocked] = useState(false);    // Prevents editing after submit
 
-    // Get email from URL query params
+    // Extract the business user ID from URL query parameters
+    // This ID comes from the QR code that was scanned
     const location = useLocation();
     const query = new URLSearchParams(location.search);
-    const email = query.get('email');
+    const id = query.get('id');
 
+    // Handle form submission to create new potential customer
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Create customer object with form data and business email
-        const customer = { name, phone, email };
+        // Prepare customer data for API
+        const customer = { name, phone, id };
 
         // Validate that all required fields are filled
         const newEmptyFields = [];
         if (!name) newEmptyFields.push('name');
         if (!phone) newEmptyFields.push('phone');
-        if (!email) newEmptyFields.push('email');
+        if (!id) newEmptyFields.push('id');
 
-        console.log('newEmptyFields:', newEmptyFields);
-
-        // Show error if any fields are empty
         if (newEmptyFields.length > 0) {
             setEmptyFields(newEmptyFields);
             setError('Please fill in all fields');
             return;
         }
 
-        // Send POST request to create customer
-        const response = await fetch('/api/customers/self', {
+        // Submit customer data to backend API
+        const response = await fetch('/api/pcustomers', {
             method: 'POST',
             body: JSON.stringify(customer),
             headers: { 
@@ -50,32 +60,28 @@ const CustomerCreation = () => {
         });
         const json = await response.json();
 
-        // Handle response
+        // Handle API response
         if (!response.ok) {
             setEmptyFields(json.emptyFields);
             setError(json.error);
         }
         if (response.ok) {
-            // Reset form on success
+            // Clear any previous errors
             setEmptyFields([]);
             setError(null);
-            // Keep the input values but lock the form
+            
+            // Lock form and store returned customer ID
             setIsLocked(true);
-            console.log('Customer created successfully:', json);
             setCustomerId(json._id);
-            console.log('Customer ID:', json._id);
         }
-    }
-
-    console.log('emptyFields:', emptyFields);
+    };
 
     return (
         <>
             <form className="customer-form" onSubmit={handleSubmit}>
-                <h3>Add Customer</h3>
-                <p>Email from query: {email} </p>
+                <h3>Add Potential Customer</h3>
+                <p>ID from query: {id} </p>
 
-                {/* Name input field */}
                 <label>Name:</label>
                 <input 
                     type="text" 
@@ -85,7 +91,6 @@ const CustomerCreation = () => {
                     disabled={isLocked}
                 />
 
-                {/* Phone input field */}
                 <label>Phone:</label>
                 <input 
                     type="text" 
@@ -95,15 +100,11 @@ const CustomerCreation = () => {
                     disabled={isLocked}
                 />
 
-                <button type="submit" disabled={isLocked}>Add Customer</button>
-                {/* Display any error messages */}
+                <button type="submit" disabled={isLocked}>Add Potential Customer</button>
                 {error && <div className="error">{error}</div>}
             </form>
-
-            {/* Render the CreateCustomerQR component outside the form */}
-            {customerId && <CreateCustomerQR customerId={customerId} />}
         </>
     );
-}
+};
 
-export default CustomerCreation;
+export default PotentialCustomerForm; 
