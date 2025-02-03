@@ -67,6 +67,30 @@ const CustomerCreation = () => {
         }
     }
 
+    const handleSendQRCode = async () => {
+        if (!customerId || !phone) {
+            setError('Customer ID and phone number are required to send the QR code.');
+            return;
+        }
+
+        const response = await fetch('/api/customerQR/send ', {
+            method: 'POST',
+            body: JSON.stringify({ customerId: customerId }), // Send customerId and phoneNumber
+            headers: { 
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const json = await response.json();
+
+        if (!response.ok) {
+            setError(json.message || 'Failed to send QR code.');
+        } else {
+            console.log('QR Code sent successfully:', json.qrCodeData);
+            setError(null); // Clear any previous errors
+        }
+    }
+
     console.log('emptyFields:', emptyFields);
 
     return (
@@ -96,12 +120,19 @@ const CustomerCreation = () => {
                 />
 
                 <button type="submit" disabled={isLocked}>Add Customer</button>
+                {/* New button to send QR code */}
+                
                 {/* Display any error messages */}
                 {error && <div className="error">{error}</div>}
             </form>
 
             {/* Render the CreateCustomerQR component outside the form */}
             {customerId && <CreateCustomerQR customerId={customerId} />}
+            {customerId && (
+                    <button type="button" onClick={handleSendQRCode} disabled={!isLocked}>
+                        Send QR Code
+                    </button>
+            )}
         </>
     );
 }

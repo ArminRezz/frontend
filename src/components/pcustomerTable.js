@@ -3,11 +3,11 @@ import { usePcustomersContext } from '../hooks/usePcustomersContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useEffect } from 'react';
 
-const PotentialCustomerTable = () => {
-    const { potentialCustomers, dispatch } = usePcustomersContext();
+const CustomerTable = () => {
+    const { pcustomers, dispatch } = usePcustomersContext();
     const { businessUser } = useAuthContext();
 
-    const handleSetCustomers = async () => {        
+    const handleSetCustomers = async () => {
         if (!businessUser) {
             return;
         }
@@ -20,23 +20,7 @@ const PotentialCustomerTable = () => {
         const json = await response.json();
 
         if (response.ok) {
-            dispatch({ type: 'SET_CUSTOMERS', payload: json });
-        }
-    };
-
-    const handleDeleteCustomer = async (customerId) => {
-        if (!businessUser) {
-            return;
-        }
-        const response = await fetch(`/api/pcustomers/${customerId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${businessUser.token}`
-            }
-        });
-
-        if (response.ok) {
-            dispatch({ type: 'DELETE_CUSTOMER', payload: customerId });
+            dispatch({ type: 'SET_PCUSTOMERS', payload: json });
         }
     };
 
@@ -46,8 +30,9 @@ const PotentialCustomerTable = () => {
     }, [businessUser]);
 
     return (
-        <table style={{ border: 'solid 1px blue', width: '100%' }}>
-            <thead>
+        <>
+            <table style={{ border: 'solid 1px blue', width: '100%' }}>
+                <thead>
                     <tr>
                         <th style={{
                             background: 'aliceblue',
@@ -55,7 +40,7 @@ const PotentialCustomerTable = () => {
                             fontWeight: 'bold',
                             padding: '10px',
                         }}>
-                            Refferals
+                            Potential Customer List
                         </th>
                         <th style={{
                             background: '#f1f1f1',
@@ -107,48 +92,35 @@ const PotentialCustomerTable = () => {
                         </th>
                     </tr>
                 </thead>
-            <tbody>
-                {potentialCustomers && potentialCustomers.map((row, index) => (
-                    <tr key={index}>
-                        <td style={{
-                            padding: '10px',
-                            border: 'solid 1px gray',
-                            background: 'papayawhip',
-                        }}>
-                            {row.name}
-                        </td>
-                        <td style={{
-                            padding: '10px',
-                            border: 'solid 1px gray',
-                            background: 'papayawhip',
-                        }}>
-                            {row.phone}
-                        </td>
-                        <td style={{
-                            padding: '10px',
-                            border: 'solid 1px gray',
-                            background: 'papayawhip',
-                        }}>
-                            <button 
-                                onClick={() => handleDeleteCustomer(row._id)}
-                                style={{
-                                    background: '#1aac83',
-                                    border: 0,
-                                    color: '#fff',
-                                    padding: '4px',
-                                    fontFamily: 'Poppins',
-                                    borderRadius: '4px',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+                <tbody>
+                    {pcustomers && pcustomers.map((row, index) => (
+                        <tr key={index}>
+                            <td style={{
+                                padding: '10px',
+                                border: 'solid 1px gray',
+                                background: 'papayawhip',
+                            }}>
+                                {row.name}
+                            </td>
+                            <td style={{
+                                padding: '10px',
+                                border: 'solid 1px gray',
+                                background: 'papayawhip',
+                            }}>
+                                {row.phone}
+                            </td>
+                            <td style={{
+                                padding: '10px',
+                                border: 'solid 1px gray',
+                                background: 'papayawhip',
+                            }}>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </>
     );
 };
 
-export default PotentialCustomerTable;
+export default CustomerTable;
