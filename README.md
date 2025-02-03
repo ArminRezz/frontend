@@ -1,6 +1,8 @@
 # QR Code Management System
+![Screenshot 2025-02-03 022325](https://github.com/user-attachments/assets/f6a0be23-72d8-4786-9030-fe5c34522bca)****
 
 ## Overview
+
 
 The QR Code Management System is a web application built with React that allows business users to generate QR codes for their customers. This application facilitates easy check-in and data collection by enabling customers to fill out their information via QR codes. The system is designed to enhance customer interaction and streamline the process of managing customer data.
 
