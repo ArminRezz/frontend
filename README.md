@@ -1,5 +1,5 @@
 # QR Code Management System
-![Screenshot 2025-02-03 022325](https://github.com/user-attachments/assets/f6a0be23-72d8-4786-9030-fe5c34522bca)****
+![Screenshot 2025-02-03 022325](https://github.com/user-attachments/assets/f6a0be23-72d8-4786-9030-fe5c34522bca)
 
 ## Overview
 
