@@ -1,76 +1,195 @@
-# Getting Started with Create React App
+# QuickRefer Frontend Documentation
+![Screenshot 2025-02-03 022325](https://github.com/user-attachments/assets/f6a0be23-72d8-4786-9030-fe5c34522bca)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+
+The QR Code Management System is a web application built with React that allows business users to generate QR codes for their customers. This application facilitates easy check-in and data collection by enabling customers to fill out their information via QR codes. The system is designed to enhance customer interaction and streamline the process of managing customer data.
+
+## Features
+
+- **Business QR Code Generation**: Authenticated business users can generate QR codes containing their email, which can be scanned by customers.
+- **Customer QR Code Generation**: Business users can create QR codes for individual customers, allowing for easy check-in.
+- **Customer Management**: Users can add, view, and delete customer records.
+- **Potential Customer Form**: Customers can fill out their information when accessing the form via a QR code link.
+- **Responsive Design**: The application is designed to be responsive and user-friendly across various devices.
+
+## Technologies Used
+
+- **Frontend**: React, React Router, Context API
+- **Styling**: CSS
+- **API**: RESTful API for backend communication
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm (Node Package Manager)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/qr-code-management-system.git
+   cd qr-code-management-system
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the application:
+   ```bash
+   npm start
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+- `npm start`: Runs the app in development mode.
+- `npm test`: Launches the test runner in interactive watch mode.
+- `npm run build`: Builds the app for production to the `build` folder.
+- `npm run eject`: Removes the single build dependency from your project.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Code Structure
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **src/**: Contains all the source code for the application.
+  - **components/**: Reusable components such as `CreateBusinessQR`, `CreateCustomerQR`, `CustomerDetails`, `CustomerForm`, and `CustomerTable`.
+  - **context/**: Context providers for managing global state (e.g., `AuthContext`, `CustomersContext`, `PCustomersContext`).
+  - **hooks/**: Custom hooks for managing authentication and customer data.
+  - **pages/**: Different pages of the application (e.g., `Home`, `Login`, `Signup`, `CustomerCreation`, `PotentialCustomerForm`).
+  - **App.js**: Main application component that sets up routing and context providers.
+  - **index.js**: Entry point of the application.
+  - **index.css**: Global styles for the application.
 
-### `npm test`
+## Component Descriptions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### CreateBusinessQR
 
-### `npm run build`
+This component allows authenticated business users to generate a QR code containing their email. It checks for user authentication and handles the form submission to generate the QR code.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### CreateCustomerQR
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This component allows business users to generate a QR code for a specific customer. It takes the customer ID as a prop and handles the QR code generation process.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Home
 
-### `npm run eject`
+The Home component serves as the main dashboard for authenticated users. It integrates various components, including the business QR code generator, customer form, and tables displaying customer data.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### CustomerCreation
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This component handles customer creation for non-logged-in users via a special link. It retrieves the business email from the URL query parameters and creates a customer associated with that business.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### PotentialCustomerForm
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+This component renders a form for potential customers to fill out their information. It is accessed via a QR code that contains a unique ID in the URL. Once submitted, the form locks to prevent duplicate submissions.
 
-## Learn More
+### CustomerDetails
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This component displays detailed information about a customer and provides an option to delete the customer record.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### CustomerForm
 
-### Code Splitting
+This component allows business users to add new customers. It validates input fields and submits the data to the backend.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### CustomerTable
 
-### Analyzing the Bundle Size
+This component displays a table of customers, allowing business users to view and manage their customer records.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## State Management
 
-### Making a Progressive Web App
+The application uses the Context API for state management. Key contexts include:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **AuthContext**: Manages the authentication state of business users.
+- **CustomersContext**: Manages the list of customers for the authenticated business user.
+- **PCustomersContext**: Manages potential customer records fetched via QR code links.
 
-### Advanced Configuration
+## API Integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The frontend communicates with the backend through various API endpoints, using the fetch API. Below are the key API integrations:
 
-### Deployment
+### Authentication
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- **POST /api/businessUser/signup**
+  - **Description**: Registers a new business user.
+  - **Request Body**: 
+    - `email`: String, required
+    - `password`: String, required
+  - **Response**: Returns the created user object or an error message.
 
-### `npm run build` fails to minify
+- **POST /api/businessUser/login**
+  - **Description**: Authenticates a business user.
+  - **Request Body**: 
+    - `email`: String, required
+    - `password`: String, required
+  - **Response**: Returns the authenticated user object and a JWT token.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### QR Code Generation
 
+- **POST /api/businessQR/create**
+  - **Description**: Generates a QR code for the authenticated business user.
+  - **Request Body**: 
+    - `businessUserEmail`: String, required
+  - **Response**: Returns the generated QR code data and a form URL.
 
-### Extra Personal Notes
+- **POST /api/customerQR/create**
+  - **Description**: Generates a QR code for a specific customer.
+  - **Request Body**: 
+    - `customerId`: String, required
+  - **Response**: Returns the generated QR code data.
 
-watch this from 21:37 he explains how everything is connected with context reducer and hooks
-https://www.youtube.com/watch?v=NKsVV7wJcDM&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE&index=11
+### Customer Management
+
+- **GET /api/customers**
+  - **Description**: Fetches all customers for the authenticated business user.
+  - **Headers**: 
+    - `Authorization`: Bearer token
+  - **Response**: Returns an array of customer objects.
+
+- **POST /api/customers**
+  - **Description**: Creates a new customer record.
+  - **Request Body**: 
+    - `name`: String, required
+    - `phone`: String, required
+  - **Response**: Returns the created customer object.
+
+- **DELETE /api/customers/:id**
+  - **Description**: Deletes a customer record by ID.
+  - **Headers**: 
+    - `Authorization`: Bearer token
+  - **Response**: Returns the deleted customer object.
+
+### Potential Customer Management
+
+- **GET /api/pcustomers**
+  - **Description**: Fetches all potential customers.
+  - **Headers**: 
+    - `Authorization`: Bearer token
+  - **Response**: Returns an array of potential customer objects.
+
+- **POST /api/pcustomers**
+  - **Description**: Creates a new potential customer record.
+  - **Request Body**: 
+    - `name`: String, required
+    - `phone`: String, required
+  - **Response**: Returns the created potential customer object.
+
+## Styling
+
+Styles are defined globally in `src/index.css` along with component-specific inline styles. Key style choices include:
+
+- **Global Settings**: Google fonts are imported, and CSS variables define primary and error colors.
+- **Component-Specific Styles**: Forms and tables have dedicated CSS classes for consistent styling.
+
+## Conclusion
+
+The QR Code Management System is a robust application designed to streamline customer interactions for businesses. With its user-friendly interface and efficient data management capabilities, it enhances the overall customer experience. Feel free to explore the code and contribute to its development!
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
